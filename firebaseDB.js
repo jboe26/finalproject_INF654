@@ -1,114 +1,134 @@
-// firebaseDB.js
-
 // ----------------------------------------------------
 // 1. FIREBASE MODULAR IMPORTS
 // ----------------------------------------------------
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js';
-import { 
-    getAuth, 
-    onAuthStateChanged, 
-    signInWithEmailAndPassword, 
-    createUserWithEmailAndPassword, 
-    signOut 
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut
 } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js';
-import { 
-    getFirestore, 
-    collection, 
-    addDoc, 
-    updateDoc, 
-    deleteDoc, 
-    getDocs,
-    doc,
-    query
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  getDocs,
+  doc,
+  query
 } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js';
 
-
 // ----------------------------------------------------
-// 2. YOUR FIREBASE CONFIGURATION
+// 2. CONFIG + INIT
 // ----------------------------------------------------
 const firebaseConfig = {
-    apiKey: "AIzaSyDfjxhcISvtwzbnbnrygPQsUutoXFCW_zo", //
-    authDomain: "budget-tracker-d9dfc.firebaseapp.com", //
-    projectId: "budget-tracker-d9dfc", //
-    storageBucket: "budget-tracker-d9dfc.appspot.com", //
-    messagingSenderId: "636586422154", //
-    appId: "1:636586422154:web:e46f153faf789f69b2a273", //
-    measurementId: "G-E82MCR928G" //
+  apiKey: "AIzaSyDfjxhcISvtwzbnbnrygPQsUutoXFCW_zo",
+  authDomain: "budget-tracker-d9dfc.firebaseapp.com",
+  projectId: "budget-tracker-d9dfc",
+  storageBucket: "budget-tracker-d9dfc.appspot.com",
+  messagingSenderId: "636586422154",
+  appId: "1:636586422154:web:e46f153faf789f69b2a273",
+  measurementId: "G-E82MCR928G"
 };
 
-
-// 3. Initialize Firebase Services
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 let currentUserId = null;
 
-
 // ----------------------------------------------------
-// 4. AUTHENTICATION FUNCTIONS (Used by auth.js and auth-gate.js)
+// 3. AUTH STATUS + AUTH HELPERS
 // ----------------------------------------------------
+function checkAuthStatus() {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUserId = user.uid;
 
-window.checkAuthStatus = () => {
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            currentUserId = user.uid;
-            
-            if (window.location.pathname.endsWith('auth.html')) {
-                window.location.href = 'index.html';
-            }
-            
-            if (window.loadTasks) {
-                window.loadTasks(); 
-            }
-        } else {
-            currentUserId = null;
-            if (!window.location.pathname.endsWith('auth.html')) {
-                window.location.href = 'auth.html';
-            }
-        }
-    });
-};
+      if (window.location.pathname.endsWith('auth.html')) {
+        window.location.href = 'index.html';
+      }
 
-window.signInWithEmailPassword = async (email, password) => { 
-    await signInWithEmailAndPassword(auth, email, password);
-};
-
-window.signUpWithEmailPassword = async (email, password) => { 
-    await createUserWithEmailAndPassword(auth, email, password);
-};
-
-window.signOutUser = async () => { 
-    await signOut(auth);
-};
-
-
-// ----------------------------------------------------
-// 5. FIRESTORE CRUD FUNCTIONS (Explicitly attached to window for app.js)
-// ----------------------------------------------------
-
-const getTransactionsCollection = () => {
-    if (!currentUserId) throw new Error("User not authenticated for DB operation.");
-    return collection(db, `users/${currentUserId}/transactions`); 
+      if (window.loadTasks) {
+        window.loadTasks();
+      }
+    } else {
+      currentUserId = null;
+      if (!window.location.pathname.endsWith('auth.html')) {
+        window.location.href = 'auth.html';
+      }
+    }
+  });
 }
 
-window.addTask = async (taskData) => { 
-    const docRef = await addDoc(getTransactionsCollection(), taskData);
-    return docRef.id;
+async function signInWithEmailPassword(email, password) {
+  await signInWithEmailAndPassword(auth, email, password);
+}
+
+async function signUpWithEmailPassword(email, password) {
+  await createUserWithEmailAndPassword(auth, email, password);
+}
+
+async function signOutUser() {
+  await signOut(auth);
+}
+
+// expose for non-module scripts
+window.checkAuthStatus = checkAuthStatus;
+window.signInWithEmailPassword = signInWithEmailPassword;
+window.signUpWithEmailPassword = signUpWithEmailPassword;
+window.signOutUser = signOutUser;
+
+// ----------------------------------------------------
+// 4. FIRESTORE CRUD (transactions)
+// ----------------------------------------------------
+const getTransactionsCollection = () => {
+  if (!currentUserId) throw new Error("User not authenticated for DB operation.");
+  return collection(db, `users/${currentUserId}/transactions`);
 };
 
-window.updateTask = async (id, taskData) => { 
-    await updateDoc(doc(getTransactionsCollection(), id), taskData);
-};
+async function addTask(taskData) {
+  const docRef = await addDoc(getTransactionsCollection(), taskData);
+  return docRef.id;
+}
 
-window.deleteTask = async (id) => { 
-    await deleteDoc(doc(getTransactionsCollection(), id));
-};
+async function updateTask(id, taskData) {
+  await updateDoc(doc(getTransactionsCollection(), id), taskData);
+}
 
-window.getTasks = async () => { 
-    const q = query(getTransactionsCollection());
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-};
+async function deleteTask(id) {
+  await deleteDoc(doc(getTransactionsCollection(), id));
+}
 
-window.checkAuthStatus();
+async function getTasks() {
+  const q = query(getTransactionsCollection());
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+}
+
+// expose for non-module scripts (optional)
+window.addTask = addTask;
+window.updateTask = updateTask;
+window.deleteTask = deleteTask;
+window.getTasks = getTasks;
+
+// kick off auth listener
+checkAuthStatus();
+
+// ----------------------------------------------------
+// 5. EXPORTS FOR MODULE CONSUMERS (app.js)
+// ----------------------------------------------------
+export {
+  auth,
+  db,
+  addTask,
+  updateTask,
+  deleteTask,
+  getTasks,
+  signInWithEmailPassword,
+  signUpWithEmailPassword,
+  signOutUser,
+  checkAuthStatus
+};
