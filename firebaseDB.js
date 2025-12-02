@@ -13,6 +13,7 @@ import {
   getFirestore,
   collection,
   addDoc,
+  setDoc,
   updateDoc,
   deleteDoc,
   getDocs,
@@ -68,7 +69,16 @@ async function signInWithEmailPassword(email, password) {
 }
 
 async function signUpWithEmailPassword(email, password) {
-  await createUserWithEmailAndPassword(auth, email, password);
+  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  const user = userCredential.user;
+
+  // Create a user profile doc with their email
+  await setDoc(doc(db, "users", user.uid), {
+    email: user.email,
+    createdAt: Date.now()
+  });
+
+  return user;
 }
 
 async function signOutUser() {
