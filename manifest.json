@@ -1,0 +1,21 @@
+{
+    "name": "Budget PWA Tracker",
+    "short_name": "BudgetPWA",
+    "description": "Track your income and expenses, online or offline.",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#26a69a",
+    "icons": [
+        {
+            "src": "image1.jpg",
+            "sizes": "192x192",
+            "type": "image/jpeg"
+        },
+        {
+            "src": "image2.jpg",
+            "sizes": "512x512",
+            "type": "image/jpeg"
+        }
+    ]
+}

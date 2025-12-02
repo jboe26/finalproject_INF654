@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Tracker PWA</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="image1.jpg" type="image/jpeg"> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="navbar-fixed">
+        <nav class="teal lighten-1">
+            <div class="nav-wrapper container">
+                <a href="#" class="brand-logo">Budget PWA</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a class="waves-effect waves-light" onclick="signOutUser()">LOGOUT</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container" style="padding-top: 20px;">
+        <div class="row">
+            <div class="col s12 m6">
+                <div class="card-panel">
+                    <h5>Add Transaction</h5>
+                    <form id="taskForm">
+                        <input type="hidden" id="taskId">
+                        <div class="input-field">
+                            <input id="expenseDescription" type="text" class="validate" required>
+                            <label for="expenseDescription">Expense/Income Title</label>
+                        </div>
+                        <div class="input-field">
+                            <input id="expenseAmount" type="number" class="validate" required step="0.01">
+                            <label for="expenseAmount">Amount ($)</label>
+                        </div>
+                        <button class="btn waves-effect waves-light teal lighten-1" type="submit">
+                            Add Transaction
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col s12 m6">
+                <div class="card-panel teal lighten-1 white-text" id="summaryContainer">
+                    <h5 class="center-align">Net Balance: <span id="netBalance">$0.00</span></h5>
+                    <div class="row">
+                        <div class="col s6 center-align">
+                            Total Expenses: <span id="totalExpenses">$0.00</span>
+                        </div>
+                        <div class="col s6 center-align">
+                            Total Income: <span id="totalIncome">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <ul class="tabs tabs-fixed-width tab-demo z-depth-1">
+                    <li class="tab col s2"><a class="active" href="#expenses-Groceries">GROCERIES</a></li>
+                    <li class="tab col s2"><a href="#expenses-Housing">HOUSING</a></li>
+                    <li class="tab col s2"><a href="#expenses-Transportation">TRANSPORT</a></li>
+                    <li class="tab col s2"><a href="#expenses-Entertainment">FUN</a></li>
+                    <li class="tab col s2"><a href="#expenses-Income">INCOME</a></li>
+                    <li class="tab col s2"><a href="#expenses-Other">OTHER</a></li>
+                </ul>
+            </div>
+            
+            <div id="tasksListContainer">
+                <div id="expenses-Groceries" class="col s12"><p class="center-align initial-message">No transactions in this category yet.</p></div>
+                <div id="expenses-Housing" class="col s12"><p class="center-align initial-message">No transactions in this category yet.</p></div>
+                <div id="expenses-Transportation" class="col s12"><p class="center-align initial-message">No transactions in this category yet.</p></div>
+                <div id="expenses-Entertainment" class="col s12"><p class="center-align initial-message">No transactions in this category yet.</p></div>
+                <div id="expenses-Income" class="col s12"><p class="center-align initial-message">No transactions in this category yet.</p></div>
+                <div id="expenses-Other" class="col s12"><p class="center-align initial-message">No transactions in this category yet.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="db.js"></script>
+    <script type="module" src="firebaseDB.js"></script> 
+    <script src="app.js"></script>
+    <script src="auth-gate.js"></script>
+</body>
+</html>
