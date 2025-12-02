@@ -1,6 +1,6 @@
 // app.js — Budget Tracker Logic (ES module)
 
-import { addTask, updateTask, deleteTask, getTasks } from "./firebaseDB.js";
+import { auth, addTask, updateTask, deleteTask, getTasks } from "./firebaseDB.js";
 
 const CATEGORY_IDS = [
   "expenses-Groceries",
@@ -23,6 +23,15 @@ function waitForDBReady(callback) {
 document.addEventListener("DOMContentLoaded", () => {
   M.Tabs.init(document.querySelectorAll(".tabs"));
   M.updateTextFields();
+
+  const userEmailSpan = document.getElementById("userEmail");
+
+  auth.onAuthStateChanged((user) => {
+    if (user && userEmailSpan) {
+      userEmailSpan.textContent = `Logged in as ${user.email}`;
+    }
+  });
+
 
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker
@@ -99,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
         M.FormSelect.init(categorySelect);
       }
 
-      loadTasks();
+      `loadTasks()`;
     });
   });
 });
