@@ -2,3 +2,12 @@
 body {
     background-color: #f4f4f4;
 }
+
+.dropdown-content li > span {
+    color: #333 !important;
+    font-weight: 500;
+}
+
+.select-wrapper input.select-dropdown {
+    color: #333; 
+}

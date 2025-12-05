@@ -38,18 +38,18 @@ function openDB() {
 // Save or update a transaction
 window.saveTask = function (transaction) {
   return new Promise((resolve, reject) => {
-    console.log("🟡 Attempting to save to IndexedDB:", transaction);
+    console.log("Attempting to save to IndexedDB:", transaction);
 
     const tx = localDB.transaction(STORE_NAME, "readwrite");
     const store = tx.objectStore(STORE_NAME);
     const request = store.put(transaction);
 
     request.onsuccess = () => {
-      console.log("✅ Saved to IndexedDB:", transaction);
+      console.log("Saved to IndexedDB:", transaction);
       resolve();
     };
     request.onerror = (event) => {
-      console.error("❌ IndexedDB save error:", event.target.error);
+      console.error("IndexedDB save error:", event.target.error);
       reject(event.target.error);
     };
   });

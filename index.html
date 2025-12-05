@@ -14,7 +14,7 @@
     <div class="navbar-fixed">
         <nav class="blue-grey darken-3">
             <div class="nav-wrapper container">
-              <a href="#" class="brand-logo">Budget PWA</a>
+              <a href="index.html" class="brand-logo">Budget Tracker PWA</a>
               <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><span id="userEmail" class="white-text" style="margin-right: 20px;"></span></li>
                 <li><a class="waves-effect waves-light" onclick="signOutUser()">LOGOUT</a></li>
@@ -36,10 +36,10 @@
                             <label for="expenseDescription">Expense/Income Title</label>
                         </div>
                         <div class="input-field">
-                            <input id="expenseAmount" type="number" class="validate" required step="0.01">
+                            <input id="expenseAmount" type="number" class="validate" required>
                             <label for="expenseAmount">Amount ($)</label>
                         </div>
-                        <button class="btn waves-effect waves-light indigo darken-1" type="submit">
+                        <button class="btn waves-effect waves-light red darken-1" type="submit">
                             Add Transaction
                           </button>
                           
@@ -48,7 +48,7 @@
             </div>
 
             <div class="col s12 m6">
-                <div class="card-panel grey darken-4 white-text" id="summaryContainer">
+                <div class="card-panel grey darken-3 white-text" id="summaryContainer">
                     <h5 class="center-align">Net Balance: <span id="netBalance">$0.00</span></h5>
                     <div class="row">
                       <div class="col s6 center-align">
@@ -66,12 +66,12 @@
         <div class="row">
             <div class="col s12">
                 <ul class="tabs tabs-fixed-width tab-demo z-depth-1">
-                    <li class="tab col s2"><a class="active" href="#expenses-Groceries">GROCERIES</a></li>
-                    <li class="tab col s2"><a href="#expenses-Housing">HOUSING</a></li>
-                    <li class="tab col s2"><a href="#expenses-Transportation">TRANSPORT</a></li>
-                    <li class="tab col s2"><a href="#expenses-Entertainment">FUN</a></li>
-                    <li class="tab col s2"><a href="#expenses-Income">INCOME</a></li>
-                    <li class="tab col s2"><a href="#expenses-Other">OTHER</a></li>
+                    <li class="tab col s2"><a class="active" href="#expenses-Groceries">Groceries</a></li>
+                    <li class="tab col s2"><a href="#expenses-Housing">Housing</a></li>
+                    <li class="tab col s2"><a href="#expenses-Transportation">Transport</a></li>
+                    <li class="tab col s2"><a href="#expenses-Entertainment">Fun</a></li>
+                    <li class="tab col s2"><a href="#expenses-Income">Income</a></li>
+                    <li class="tab col s2"><a href="#expenses-Other">Other</a></li>
                 </ul>
             </div>
             

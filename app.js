@@ -127,7 +127,7 @@ async function handleAdd(taskData) {
       await saveTask({ ...taskData, id: tempId, synced: false });
     }
 
-    M.toast({ html: "Transaction saved!", classes: "teal lighten-2" });
+    M.toast({ html: "Transaction saved!", classes: "red lighten-2" });
     setTimeout(() => loadTasks(), 100);
   } catch (err) {
     console.error("handleAdd error:", err);
@@ -143,7 +143,7 @@ async function handleEdit(id, taskData) {
     } else {
       await saveTask({ ...taskData, id, synced: false });
     }
-    M.toast({ html: "Transaction updated!", classes: "teal lighten-2" });
+    M.toast({ html: "Transaction updated!", classes: "red lighten-2" });
     setTimeout(() => loadTasks(), 100);
   } catch (err) {
     console.error("handleEdit error:", err);
@@ -236,9 +236,9 @@ window.loadTasks = async function () {
   const cardPanel = document.getElementById("summaryContainer");
   if (netBalance >= 0) {
     cardPanel.classList.remove("red", "darken-2");
-    cardPanel.classList.add("teal", "lighten-1");
+    cardPanel.classList.add("black", "lighten-1");
   } else {
-    cardPanel.classList.remove("teal", "lighten-1");
+    cardPanel.classList.remove("black", "lighten-1");
     cardPanel.classList.add("red", "darken-2");
   }
 
